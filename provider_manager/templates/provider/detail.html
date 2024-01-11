@@ -1,0 +1,13 @@
+{% extends "base/index.html" %}
+
+{% block content_main %}
+    {% if pays %}
+        {% for p in pays %}
+            {{p}}
+        {% endfor %}
+    {% else %}
+        no hay pagos
+        {% csrf_token %}
+        {{form.as_p}}
+    {% endif %}
+{% endblock content_main %}

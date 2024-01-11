@@ -1,0 +1,17 @@
+{% extends "base/index.html" %}
+
+{% block content_main %}
+    <h1>sales index</h1>
+    <input type="text", value="{{order.number}}">
+    <input type="text", value="{{order.client}}">
+    <input type="text", value="{{order.user}}">
+    <div>
+        <input type="date", value="{{order.createdAt}}">
+    </div>
+    <div>
+        {% include "sales/order_detail_sale.html" %}
+    </div>
+
+    <input type="text", value="{{order.total}}">
+
+{% endblock content_main %}

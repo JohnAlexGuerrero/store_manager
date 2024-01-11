@@ -1,0 +1,160 @@
+{% block content_order_detail %}
+<div class="container mt-3">
+    <h2>Striped Rows</h2>
+    <p>The .table-striped class adds zebra-stripes to a table:</p>            
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>description</th>
+          <th>cantidad</th>
+          <th>precio unit</th>
+          <th>dts</th>
+          <th>total</th>
+          <th>actions</th>
+        </tr>
+      </thead>
+      <tbody id="id_order">
+        <form actions="/sales/orderdetailsale/add/" method="post">
+            {% csrf_token %}
+            <tr>
+                <td>
+                  <input class="form-control" name="product" list="datalistOptions" id="id_product" placeholder="Type to search...">
+                  <datalist id="datalistOptions">
+                      {% for item in items %}
+                        <option value="{{item}}">{{item}}</option>
+                      {% endfor %}
+                  </datalist>                
+                </td>
+                <td>
+                  <input 
+                    class="form-control" 
+                    name="amount" 
+                    type="number" 
+                    id="id_amount" 
+                    onchange="changeAmount(this)"
+                    onkeyup="changeAmount(this)"
+                    min="1"
+                    value="1"
+                  >
+                </td>
+                <td>
+                  <input 
+                    class="form-control" 
+                    name="price" 
+                    type="number" 
+                    id="id_price" 
+                    onchange="changePrice(this)"
+                    onkeyup="changePrice(this)"
+                    value="2000"
+                    step="1000"
+                  >
+                </td>
+                <td>
+                  <input 
+                    class="form-control" 
+                    name="dto" 
+                    type="number" 
+                    id="id_dto" 
+                    onchange="changeDto(this)"
+                    onkeyup="changeDto(this)"
+                    min="0"
+                    value="0"
+                    step="500"
+                  >
+                </td>
+                <td>
+                  <p id="p-total">$ 0.0</p>
+                </td>
+                <td>
+                  <input 
+                    type="submit" 
+                    value="Submit"
+                    id="id_submit"
+                  >
+                </td>
+            </tr>
+        </form>
+      </tbody>
+    </table>
+  </div>
+
+  {% block content_js %}
+    <script>
+      const order = []
+      const productEl = document.getElementById('id_product')
+      const orderEl = document.getElementById('id_order')
+      const totalEl = document.getElementById('p-total')
+      const amountEl = document.getElementById('id_amount')
+      const priceEl = document.getElementById('id_price')
+      const dtoEl = document.getElementById('id_dto')
+
+      console.log(orderEl.children[0]);
+
+      document.getElementById('id_submit').addEventListener('click', submitOrderDetailSale)
+
+      const submitOrderDetailSale = ()=>{
+        let xhr =  new HMLHttpRequest()
+
+        xhr.open("POST", "/sales/orderdetailsale/add", true)
+        
+        xhr.setRequestHeader("Content-Type", "application/json")
+        xhr.send(JSON.stringify({
+          
+        }))
+        let product = {
+          description: productEl.value,
+          qty: amountEl.value,
+          price: priceEl.value,
+          dto: dtoEl.value,
+          total: totalEl.textContent
+        }
+
+        order.push(product)
+        addTableOrder()
+        cleanInput(productEl)
+      }
+
+      const cleanInput = (element)=>{
+        element.value = ''
+      }
+
+      const addTableOrder = ()=>{
+        //orderEl.innerHTML = ``
+
+        order.forEach(item =>{
+          const tr = document.createElement('tr')
+
+          tr.innerHTML = `
+            <td>${item.description}</td>
+            <td>${item.qty}</td>
+            <td>${item.price}</td>
+            <td>${item.dto}</td>
+            <td>${item.total}</td>
+          `
+
+          orderEl.appendChild(tr)
+        })
+      }
+
+      const calcTotalEl = ()=> {
+        totalEl.textContent = `$ ${(amountEl.value * priceEl.value) - dtoEl.value },00`
+      }
+
+      const changeAmount = (e)=>{
+        amountEl.textContent = e.value
+        calcTotalEl()
+      }
+
+      const changePrice = (e)=>{
+        priceEl.textContent = e.value
+        calcTotalEl()
+      }
+
+      const changeDto = (e)=>{
+        dtoEl.textContent = e.value
+        calcTotalEl()
+      }
+    </script>
+  {% endblock content_js %}
+    
+{% endblock content_order_detail %}
