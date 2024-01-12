@@ -3,10 +3,23 @@ from sales.models import Order, Client, OrderDetailSale
 from inventory.models import Product
 from django.views.generic import TemplateView
 from django.views.generic import CreateView
+from django.views.generic import DetailView
 from datetime import datetime
 from sales.forms import OrderDetailSaleForm
 
 # Create your views here.
+class OrderDetailView(DetailView):
+    model = Order
+    template_name = "sales/order_detail.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["orders"] = OrderDetailSale.objects.filter(order=context['object'].id)
+        print(context) 
+        return context
+    
+
+
 class OrderView(TemplateView):
     template_name = "sales/index.html"
     
