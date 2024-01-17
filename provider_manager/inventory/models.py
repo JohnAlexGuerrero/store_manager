@@ -12,7 +12,6 @@ set_unit_product = (
 
 set_tax_product = (
     (1.19,'19 %'),
-    (1.00,'no aplica'),
 )
 
 class Product(models.Model):
