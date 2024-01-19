@@ -43,19 +43,6 @@ class BillAdmin(admin.ModelAdmin):
     list_filter = ("company__name",)
     actions = [pay_select_bill]
     
-    fieldsets = (
-        (None, {
-            "fields": (
-                "company","number","createdAt","expirationAt","way_to_pay","is_credit"
-            ),
-        }),
-        ("Totals",
-         {
-            "classes":['collapse'],
-            "fields":["subtotal","tax","total"]
-            
-         })
-    )
         
     def balance_total(self, obj):
         pays = Provider.objects.filter(bill__number=obj)
