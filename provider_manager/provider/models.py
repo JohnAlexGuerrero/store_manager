@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from django.db.models import Count, Sum
+from decimal import Decimal
 
 from inventory.models import Product, set_tax_product
 
@@ -84,8 +85,8 @@ class Bill(models.Model):
 
     def save(self, *args, **kwargs):
         total = OrderDetail.objects.filter(bill=self.id).aggregate(Sum('total'))
-        self.subtotal = total
-        self.total = total * set_tax_product[0]
+        self.subtotal = total["total__sum"]
+        self.total = total['total__sum'] * Decimal(1.19)
         self.tax = self.total - self.subtotal
         
         return super().save(*args, **kwargs)
