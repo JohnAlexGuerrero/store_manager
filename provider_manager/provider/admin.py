@@ -6,20 +6,31 @@ from payments.views import ProviderDetailView
 from django.shortcuts import redirect
 
 # Register your models here.
-def pay_select_bill(modeladmin, request, queryset):
+def selected_one_bill(modeladmin, request, queryset):
     if queryset.count() == 1:
         item = queryset.first()
-        print(item)
-        return redirect('detail-pay', pk=item.id)
+        return item
     else:
         modeladmin.message_user(request, "Por favor selecciona una sola cuenta")
+        
+def pay_bill(modeladmin, request, queryset):
+    item = selected_one_bill(modeladmin, request, queryset)
+    if item:
+        return redirect('detail-pay', pk=item.id)
 
-pay_select_bill.short_description = "Pagar cuenta"
+def view_bill(modeladmin, request, queryset):
+    item = selected_one_bill(modeladmin, request, queryset)
+    if item:
+        return redirect('bill-detail', pk=item.id)
+    
+
+pay_bill.short_description = "Pagar"
+view_bill.short_description = "Ver"
     
     
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
-    list_display = ['name','sellerman','phone']
+    list_display = ['name','sellerman','phone','balance_total']
     fieldsets = (
         (
             None,
@@ -35,13 +46,17 @@ class CompanyAdmin(admin.ModelAdmin):
             }
         )
     )
+    
+    def balance_total(self, obj):
+        total = Bill.objects.filter(company__name=obj.name).aggregate(Sum('total'))
+        return f'{total['total__sum']:,.2f}'
 
 @admin.register(Bill)
 class BillAdmin(admin.ModelAdmin):
     list_display = ['company_display','number','createdAt','expirationAt','way_to_pay','total','status','balance_total']
     search_fields = ['number',]
     list_filter = ("company__name",)
-    actions = [pay_select_bill]
+    actions = [pay_bill, view_bill]
     
         
     def balance_total(self, obj):
