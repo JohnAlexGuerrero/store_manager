@@ -19,4 +19,5 @@ class ProductForm(forms.ModelForm):
     code = forms.CharField(initial=set_code_bar)
     class Meta:
         model = Product
-        fields = ("description","code","stock","unit","cost_with_tax","updatedAt")
+        fields = ("description","code","stock","unit","cost","tax","cost_with_tax","updatedAt")
+

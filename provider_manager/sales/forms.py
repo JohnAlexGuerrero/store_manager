@@ -20,7 +20,7 @@ class OrderForm(forms.ModelForm):
     
     class Meta:
         model = Order
-        fields = ("user","client","number","createdAt","total","coments")
+        fields = ("user","client","number","orderdetails","createdAt","total","coments")
         # exclude = ("user","client","createdAt","total","coments")
 
 class ClientForm(forms.ModelForm):
@@ -37,4 +37,4 @@ class OrderDetailSaleForm(forms.ModelForm):
     # order = forms.ChoiceField(choices=CHOICES, required=False)
     class Meta:
         model = OrderDetailSale
-        fields = ("order","product","amount","price","dto")
+        fields = ("product","amount","price","dto")

@@ -14,9 +14,17 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['code','description','stock','price','total_cost_stock']    
+    list_display = ['code','description','stock','price','total_cost_stock','category_display']    
     search_fields = ['description']
+    # list_filter = ['category_display']
+    list_per_page = 10
+    ordering = ('description',)
     form = ProductForm
+    
+    def category_display(self, obj):
+        categories = Category.objects.filter(products__id=obj.id)
+        categories_arr = [c.name for c in categories]
+        return categories_arr
     
     def total_cost_stock(self, obj):
         return f'$ {(obj.cost_with_tax * obj.stock):,.2f}'

@@ -1,22 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, resolve_url, redirect
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 from payments.models import Provider
-from django.views.generic import DetailView
-from provider.models import Bill
 from payments.forms import ProviderForm
 
-# Create your views here.
-
-class ProviderDetailView(DetailView):
+# # Create your views here.
+class ProviderCreateView(CreateView):
     model = Provider
     template_name = "payments/provider.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        bill = Bill.objects.get(id=self.kwargs['pk'])
-        if bill:
-            context["bill"] = bill
-            context['pays'] = Provider.objects.filter(bill_id=bill.id)
-        context['form'] = ProviderForm
-        print(context)
-        return context
-    
+    form_class = ProviderForm
+    # success_url = reverse_lazy('/admin/provider/bill/')

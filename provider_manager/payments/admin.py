@@ -1,8 +1,6 @@
 from typing import Any
 from django.contrib import admin
-from django.db.models.query import QuerySet
 from django.db.models import Sum
-from django.http.request import HttpRequest
 from payments.models import Provider, SalesBill
 from provider.models import Bill
 from sales.models import Utility

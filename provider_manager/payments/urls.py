@@ -1,6 +1,6 @@
 from django.urls import path
-from payments.views import ProviderDetailView
+from payments.views import ProviderCreateView
 
 urlpatterns = [
-    path('b/<int:pk>', ProviderDetailView.as_view(), name='bill-pay'),
+    path('create', ProviderCreateView.as_view(), name='create-pay-provider'),
 ]

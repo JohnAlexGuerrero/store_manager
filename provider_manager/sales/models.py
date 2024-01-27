@@ -2,6 +2,8 @@ from django.db import models
 from django.urls import reverse
 from inventory.models import Product
 from django.contrib.auth.models import User
+from decimal import Decimal
+from django.db.models import Count, Sum
 
 # Create your models here.
 class Client(models.Model):
@@ -20,31 +22,7 @@ class Client(models.Model):
     def get_absolute_url(self):
         return reverse("Client_detail", kwargs={"pk": self.pk})
 
-class Order(models.Model):
-    user = models.ForeignKey(User, verbose_name=("vendedor"), on_delete=models.CASCADE)
-    client = models.ForeignKey(Client, verbose_name=("clients"), on_delete=models.CASCADE)
-    number = models.CharField(("factura"), max_length=50, unique=True)
-    createdAt = models.DateField(("fecha"), auto_now=False)
-    total = models.DecimalField(("total"), max_digits=10, decimal_places=2, default=0.0)
-    coments = models.TextField(("observaciones"), blank=True, null=True)
-    is_paid = models.BooleanField(("cancelado"), default=False)
-
-    class Meta:
-        verbose_name = ("Order")
-        verbose_name_plural = ("Orders")
-        ordering = ("-createdAt",)
-
-    def __str__(self):
-        return f'{self.number}'
-
-    def get_absolute_url(self):
-        return reverse("Order_detail", kwargs={"pk": self.pk})
-    
-    def set_number_bill():
-        return f'{4090 + Order.objects.all().count()}'
-
 class OrderDetailSale(models.Model):
-    order = models.ForeignKey(Order, verbose_name=("orders"), on_delete=models.CASCADE)
     product = models.ForeignKey(Product, verbose_name=("products"), on_delete=models.CASCADE)
     amount = models.IntegerField(("cantidad"), default=0)
     price = models.DecimalField(("precio"), max_digits=10, decimal_places=2, default=0.0)
@@ -56,24 +34,53 @@ class OrderDetailSale(models.Model):
         verbose_name_plural = ("OrderDetails")
 
     def __str__(self):
-        return self.order.number
+        return self.product.description
 
     def get_absolute_url(self):
         return reverse("OrderDetail_detail", kwargs={"pk": self.pk})
 
     def save(self, *args, **kwargs):
-        self.total = (self.amount * self.price ) - self.dto
-        
-        bill = Order.objects.get(id=self.order.id)
-        bill.total = bill.total + self.total
-        bill.save()
-        
+        self.total = (self.amount * self.price ) - self.dto     
         return super().save(*args, **kwargs)
+    
+class Order(models.Model):
+    user = models.ForeignKey(User, verbose_name=("vendedor"), on_delete=models.CASCADE)
+    client = models.ForeignKey(Client, verbose_name=("clients"), on_delete=models.CASCADE)
+    number = models.CharField(("factura"), max_length=50, unique=True)
+    orderdetails = models.ManyToManyField(OrderDetailSale, verbose_name=("orderdetailsales"))
+    subtotal = models.DecimalField(("subtotal"), max_digits=10, decimal_places=2, default=0.0)
+    tax = models.DecimalField(("impuesto"), max_digits=10, decimal_places=2, default=0.0)
+    total = models.DecimalField(("total"), max_digits=10, decimal_places=2, default=0.0)
+    coments = models.TextField(("observaciones"), blank=True, null=True)
+    is_paid = models.BooleanField(("cancelado"), default=False)
+    createdAt = models.DateField(("fecha"), auto_now=False)
+
+    class Meta:
+        verbose_name = ("Order")
+        verbose_name_plural = ("Orders")
+        ordering = ("-createdAt",)
+
+    def __str__(self):
+        return self.number
+
+    def get_absolute_url(self):
+        return reverse("Order_detail", kwargs={"pk": self.pk})
+    
+    def set_number_bill():
+        return f'{4090 + Order.objects.all().count()}'
+
+    def save(self, *args, **kwargs):
+        total = OrderDetailSale.objects.filter(order=self.id).aggregate(Sum('total'))
+        self.total = total['total__sum']
+        self.subtotal = self.total / Decimal(1.19)
+        self.tax = self.total - self.subtotal
+        return super().save(*args, **kwargs)
+
 
 class Utility(models.Model):
     orderdetail = models.ForeignKey(OrderDetailSale, verbose_name=("orderdetailsales"), on_delete=models.CASCADE)
     value = models.DecimalField(("valor"), max_digits=10, decimal_places=2, default=0.0)
-    createdAt = models.DateField(auto_now_add=True, blank=True, null=True)
+    createdAt = models.DateField(auto_now_add=False, blank=True, null=True)
     
     class Meta:
         verbose_name = ("Utility")
@@ -81,7 +88,7 @@ class Utility(models.Model):
         ordering = ("-createdAt",)
 
     def __str__(self):
-        return self.orderdetail.product
+        return f'{self.orderdetail}'
 
     def get_absolute_url(self):
         return reverse("Utility_detail", kwargs={"pk": self.pk})

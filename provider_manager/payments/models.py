@@ -16,6 +16,7 @@ set_way_to_pay = (
 )
 
 class Provider(models.Model):
+    reference = models.CharField(("referencia"), max_length=50, unique=True)
     user = models.ForeignKey(User, verbose_name=("user"), on_delete=models.CASCADE)
     bill = models.ForeignKey(Bill, verbose_name=("bills"), on_delete=models.CASCADE)
     value = models.DecimalField(("valor"), max_digits=10, decimal_places=2, default=0.0)
@@ -37,7 +38,7 @@ class SalesBill(models.Model):
     order = models.ForeignKey(Order, verbose_name=("orders"), on_delete=models.CASCADE)
     total = models.DecimalField(("value"), max_digits=10, decimal_places=2, default=0.0)
     way_to_pay = models.CharField(("tipo pago"), max_length=10, choices=set_way_to_pay, default=set_way_to_pay[0])
-    createdAt = models.DateField(("creado"), auto_now_add=True)
+    createdAt = models.DateField(("creado"), auto_now_add=False)
 
     class Meta:
         verbose_name = ("SalesBill")
@@ -51,12 +52,12 @@ class SalesBill(models.Model):
         return reverse("Bill_detail", kwargs={"pk": self.pk})
 
     def save(self, *args, **kwargs):
-        order_details = OrderDetailSale.objects.filter(order_id=self.order.id)
+        order_details = OrderDetailSale.objects.filter(order=self.order)
+        print(order_details)
+        
         for item in order_details:
             value_ = item.total - (item.product.cost_with_tax * item.amount)
-            util = Utility(orderdetail_id=item.id,value=value_, createdAt=self.createdAt)
+            util = Utility(orderdetail_id=item.id, value=value_, createdAt=self.order.createdAt)
             util.save()
         
-        self.order.is_paid = True
-        self.save()
         return super().save(*args, **kwargs)

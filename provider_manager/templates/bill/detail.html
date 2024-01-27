@@ -13,21 +13,29 @@
                     <thead>
                       <tr>
                         <th scope="col">#</th>
+                        <th scope="col">Código</th>
+                        <th scope="col">Cant.</th>
                         <th scope="col">Descripcion</th>
-                        <th scope="col">Cantidad</th>
-                        <th scope="col">Unidad</th>
-                        <th scope="col">Precio</th>
-                        <th scope="col">Total</th>
+                        <th scope="col">Und.</th>
+                        <th scope="col">Vlr/Uni</th>
+                        <th scope="col">Vlr/Uni - Iva</th>
+                        <th scope="col">% Iva</th>
+                        <th scope="col">Valor Total</th>
                       </tr>
                     </thead>
                     <tbody>
                         {% for item in list_items %}
                         <tr>
                             <th scope="row">1</th>
-                            <td>{{item.product.description.capitalize}}</td>
+                            <td>{{item.product.code}}</td>
                             <td>{{item.quantity}}</td>
+                            <td>{{item.product.description.capitalize}}</td>
                             <td>{{item.product.unit}}</td>
+                            <td>{{item.product.cost_with_tax}}</td>
                             <td>{{item.price}}</td>
+                            {% if item.product.tax %}
+                                <td>19</td>
+                            {% endif %}
                             <td>{{item.total}}</td>
                         </tr>                        
                         {% endfor %}
