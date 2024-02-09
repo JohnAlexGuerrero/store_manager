@@ -33,6 +33,14 @@ class Provider(models.Model):
 
     def get_absolute_url(self):
         return reverse("Provider_detail", kwargs={"pk": self.pk})
+    
+    def save(self, *args, **kwargs):
+        bill = Bill.objects.get(id=self.bill.id)
+        print(bill.number)
+        if (bill.total - self.value) < 1000:
+            bill.is_paid = True
+            bill.save()
+        return super().save(*args, **kwargs)
 
 class SalesBill(models.Model):
     order = models.ForeignKey(Order, verbose_name=("orders"), on_delete=models.CASCADE)

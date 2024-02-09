@@ -21,6 +21,7 @@ def select_one_item(modeladmin,request, queryset):
 @admin.register(OrderDetailSale)
 class OrderDetailSaleAdmin(admin.ModelAdmin):
     list_display = ['product','amount','price','total','revenue','utility']
+    search_fields = ['product__product_name']
     
     def total(self, obj):
         return obj.amount * obj.price
@@ -36,6 +37,8 @@ class OrderDetailSaleAdmin(admin.ModelAdmin):
 class OrderAdmin(admin.ModelAdmin):
     list_display = ("createdAt","number","client","total",'utility','revenue',"is_paid")
     form = OrderForm
+    date_hierarchy = 'createdAt'
+    list_filter = ('is_paid',)
     # actions = [order_selected]
     
     def revenue(self, obj):

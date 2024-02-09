@@ -11,10 +11,9 @@ from payments.forms import ProviderForm
 @admin.register(Provider)
 class ProviderAdmin(admin.ModelAdmin):
     list_display = ['company_display','bill','createdAt','value',"balance"]
-    list_filter = (
-        ('createdAt',)
-    )
+    date_hierarchy = 'createdAt'
     search_fields = ("bill__number",)
+    ordering = ('createdAt',)
     
     form = ProviderForm
     
