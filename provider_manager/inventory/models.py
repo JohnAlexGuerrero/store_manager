@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
+from decimal import Decimal
 
 # Create your models here.
 set_unit_product = (
@@ -38,6 +39,10 @@ class Product(models.Model):
     def save(self, *args, **kwargs):
         if not self.url:
             self.url = slugify(self.description)
+            
+        if self.cost_with_tax == 0:
+            self.cost_with_tax = self.cost * Decimal(1.19)
+            self.tax = round(self.cost_with_tax - self.cost, 2)
         return super().save(*args, **kwargs)
 
 class Category(models.Model):

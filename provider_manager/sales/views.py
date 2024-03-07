@@ -7,7 +7,25 @@ from django.views.generic import DetailView
 from datetime import datetime
 from sales.forms import OrderDetailSaleForm
 
+
+from reportlab.pdfgen import canvas
+from django.http import HttpResponse
+
 # Create your views here.
+def pdfReportSales(request):
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Dispositon"] = 'attachment; filename=hello.pdf'
+    
+    p = canvas.Canvas(response)
+    p.setFont("Courier", 28)
+    p.drawString(0, 0, "Hola mundo")
+    
+    p.showPage()
+    p.save()
+    return response
+    
+
+
 class OrderDetailView(DetailView):
     model = Order
     template_name = "sales/order_detail.html"

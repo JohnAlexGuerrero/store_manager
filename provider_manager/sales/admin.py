@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.db.models import Sum
 from decimal import Decimal
 
+
 from sales.models import OrderDetailSale, Order, Client
 from sales.forms import ClientForm, OrderForm, OrderDetailSaleForm
 from payments.models import SalesBill, Utility
@@ -16,12 +17,11 @@ def select_one_item(modeladmin,request, queryset):
     modeladmin.message_user(request, "Por favor selecciona una sola cuenta")
     
 
-
-
 @admin.register(OrderDetailSale)
 class OrderDetailSaleAdmin(admin.ModelAdmin):
     list_display = ['product','amount','price','total','revenue','utility']
-    search_fields = ['product__product_name']
+    search_fields = ['product__name']
+    list_per_page = 10
     
     def total(self, obj):
         return obj.amount * obj.price
@@ -35,11 +35,14 @@ class OrderDetailSaleAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ("createdAt","number","client","total",'utility','revenue',"is_paid")
+    list_display = ("createdAt","number","client","total_invoice",'utility','revenue',"is_paid")
     form = OrderForm
     date_hierarchy = 'createdAt'
     list_filter = ('is_paid',)
-    # actions = [order_selected]
+    list_per_page = 10
+    
+    def total_invoice(self, obj):
+        return f'{obj.total:,.2f}'
     
     def revenue(self, obj):
         if obj.is_paid:
@@ -73,9 +76,15 @@ class OrderAdmin(admin.ModelAdmin):
             pay_sale.save()
             item.save()
         modeladmin.message_user(request, 'La factura esta cancelada.')
+    
+    def report_order(modeladmin, request, queryset):
+        print(queryset.values('createdAt').annotate(Sum('total')).order_by('-createdAt'))
+        return redirect('report-sales')
+        
             
     admin.site.add_action(view_sale_order, 'Ver')
     admin.site.add_action(pay_sale_order, 'pagar')
+    admin.site.add_action(report_order, 'reporte de ventas')
 
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):

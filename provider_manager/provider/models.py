@@ -88,6 +88,7 @@ class Bill(models.Model):
         total = OrderDetail.objects.filter(bill=self.id).aggregate(Sum('total'))
         self.subtotal = total["total__sum"]
         self.total = total['total__sum'] * Decimal(1.19)
+        print(OrderDetail.objects.filter(bill=self.id))
         self.tax = self.total - self.subtotal
         
         return super().save(*args, **kwargs)

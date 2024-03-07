@@ -14,7 +14,8 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['code','description','stock','price','total_cost_stock','category_display']    
+    list_display = ['code','description','stock','unit','price','total_cost_stock','category_display']    
+    list_editable = ('stock',)
     search_fields = ['description']
     # list_filter = ['category_display']
     list_per_page = 10

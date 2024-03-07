@@ -1,0 +1,73 @@
+{% extends "base/index.html" %}
+
+{% block content_main %}
+
+<div class="card container">
+    <div class="p-3">
+        <h1 class="display-7">Name Collections</h1>
+        <div class="d-flex justify-content-between">
+            <p>Mostrar 1 - 15 de 15 productos</p>
+            <div class="d-flex m-0 justify-content-center">
+                <p class="text-start align-middle m-0">Ordenar por:</p>  
+                <select class="form-select border-0 border m-0" aria-label="Disabled select example">
+                    <option selected>Open this select menu</option>
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                    <option value="3">Three</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <hr class="w-100">
+    <div>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Description</th>
+                <th scope="col">Disponible</th>
+                <th scope="col">Precio</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>
+                    <p class="m-0 h5">
+                        <a href="#" onclick="showDetails(this)" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover link-underline-light" data-item="add-to-cart">
+                            Registro de ducha briza pomo
+                        </a>    
+                    </p>
+                    
+                   <small class="h7">SKU: 1232323233</small>
+                </td>
+                <td>
+                    6 Unds
+                    </td>
+                <td>
+                    $ 43.000
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td colspan="2">Larry the Bird</td>
+                <td>@twitter</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+</div>
+
+<script >
+    function showDetails(product){
+        let item = product.getAttribute("data-item");
+        alert("The "+ item + " is a ")
+    }
+</script>
+{% endblock content_main %}

@@ -1,0 +1,220 @@
+{% extends "base/index.html" %}
+
+{% block content_main %}
+<div class="card rounded">
+  <div class="card-body">
+    <div class="container text-center">
+      <div class="row align-items-center">
+        <div class="col">
+          <div class="flex-column mb-3">
+            <div class="d-flex icon-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart" viewBox="0 0 16 16">
+                <path d="M4 11H2v3h2zm5-4H7v7h2zm5-5v12h-2V2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1z"/>
+              </svg>
+              One of three columns
+            </div>
+            <div class="p-2 align-items-center">
+              <h2>
+                $ 216K
+              </h2>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="flex-column mb-3">
+            <div class="d-flex icon-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart" viewBox="0 0 16 16">
+                <path d="M4 11H2v3h2zm5-4H7v7h2zm5-5v12h-2V2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1z"/>
+              </svg>
+              One of three columns
+            </div>
+            <div class="p-2 align-items-center">
+              <h2>
+                $ 216K
+              </h2>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="flex-column mb-3">
+            <div class="d-flex icon-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart" viewBox="0 0 16 16">
+                <path d="M4 11H2v3h2zm5-4H7v7h2zm5-5v12h-2V2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1z"/>
+              </svg>
+              One of three columns
+            </div>
+            <div class="p-2 align-items-center">
+              <h2>
+                $ 216K
+              </h2>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="flex-column mb-3">
+            <div class="d-flex icon-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart" viewBox="0 0 16 16">
+                <path d="M4 11H2v3h2zm5-4H7v7h2zm5-5v12h-2V2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1z"/>
+              </svg>
+              One of three columns
+            </div>
+            <div class="p-2 align-items-center">
+              <h2>
+                $ 216K
+              </h2>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-4">
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <div class="flex-column">
+            <p class="h4">h3. Bootstrap heading</p>
+            <canvas id="myChart" style="width:100%;max-width:800px"></canvas>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col col">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <p class="h3">Sales</p>
+            <div class="btn-group d-flex w-25 justify-content-between" role="group">
+              <button type="button" class="btn btn-light dropdown-toggle border-0" data-bs-toggle="dropdown" aria-expanded="false" onclick="selectedMonth()">
+                <div class="icon-link">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                  </svg>
+                  Month:
+                </div>
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">January</a></li>
+                <li><a class="dropdown-item" href="#">February</a></li>
+                <li><a class="dropdown-item" href="#">March</a></li>
+                <li><a class="dropdown-item" href="#">April</a></li>
+                <li><a class="dropdown-item" href="#">May</a></li>
+                <li><a class="dropdown-item" href="#">June</a></li>
+                <li><a class="dropdown-item" href="#">July</a></li>
+                <li><a class="dropdown-item" href="#">August</a></li>
+                <li><a class="dropdown-item" href="#">Setember</a></li>
+                <li><a class="dropdown-item" href="#">Octuber</a></li>
+                <li><a class="dropdown-item" href="#">November</a></li>
+                <li><a class="dropdown-item" href="#">Dicember</a></li>
+              </ul>
+            </div>
+          </div>
+        
+          <table class="table table-borderless">
+            <tbody id="tableSales">
+              {% for sale in sales %}
+              <tr>
+                <th scope="row">
+                  <div class="d-flex icon-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bar-chart" viewBox="0 0 16 16">
+                      <path d="M4 11H2v3h2zm5-4H7v7h2zm5-5v12h-2V2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1z"/>
+                    </svg>
+                    Inv
+                  </div>
+                </th>
+                <td>{{sale.createdAt}}</td>
+                <td>{{sale.client}}</td>
+                <td>#{{sale.number}}</td>
+                <td>
+                  <span class="badge text-bg-success">
+                    {% if sale.is_paid %}
+                      Canceled
+                    {% else %}
+                      Pending
+                    {% endif %}
+                  </span>
+                </td>
+                <td>${{sale.total}}</td>
+                <td>...</td>
+              </tr>    
+              {% endfor %}
+              
+            </tbody>
+          </table>
+          <div class="pagination">
+            <span class="step-links">
+                {% if sales.has_previous %}
+                    <a href="?page=1">&laquo; Primero</a>
+                    <a href="?page={{ sales.previous_page_number }}">anterior</a>
+          {% endif %}
+        
+          <span class="current">
+              Página {{ sales.number }} de {{ sales.paginator.num_pages }}.
+          </span>
+            <span>
+              {% if sales.has_next %}
+                <a href="?page={{ sales.next_page_number }}">siguiente</a>
+                <a href="?page={{ sales.paginator.num_pages }}">último &raquo;</a>
+              {% endif %}
+          </span>
+        </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+
+  const selectedMonth = () =>{
+    alert('click')
+  }
+  
+  const listSalesPerMonth = "{{sales_per_month}}"
+  const sizeListSalesPerMonth = listSalesPerMonth.length
+  const dataString = listSalesPerMonth.slice(1, sizeListSalesPerMonth-1)
+  const dataValues = dataString.split(',')
+
+  const xValues = ["Jan", "Feb", "Mar", "Apr", "May","June","July","Ago","Sept","Oct","Nov","Dic"];
+  const yValues =  dataValues.map(el => parseInt(el))
+
+  console.log(yValues)
+
+  const barColors = [
+    "rgba(255,0,0,1.0)",
+    "rgba(255,0,0,0.8)",
+    "rgba(255,0,0,0.6)",
+    "rgba(255,0,0,0.4)",
+    "rgba(255,0,0,0.2)"
+  ];
+
+new Chart("myChart", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: false
+        }
+      }],
+    }
+  }
+});
+
+
+</script>
+{% endblock content_main %}

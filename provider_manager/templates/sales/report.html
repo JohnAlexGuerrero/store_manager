@@ -1,0 +1,8 @@
+{% extends "base/index.html" %}
+
+{% block content_main %}
+report sales
+{% for q in Queryset %}
+    {{q}}
+{% endfor %}
+{% endblock content_main %}

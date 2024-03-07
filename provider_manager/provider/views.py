@@ -39,7 +39,7 @@ class BillPayView(TemplateView):
         ref = f'RCB - {Provider.objects.all().count() + 2931}'
 
         print(ref)
-        data = {'user': user, 'reference':ref, 'bill':bill, 'value':bill.total,'description':'', 'createdAt':datetime.now().strftime('%y-%m-%d')}
+        data = {'user': user, 'reference':ref, 'bill':bill, 'value':bill.total,'description':'', 'createdAt':datetime.now().strftime('%Y-%m-%d')}
         print(data)
         f = ProviderForm(data)
         context['form'] = f
@@ -53,11 +53,10 @@ class BillPayView(TemplateView):
             if form.is_valid:
                 new_object = form.save(commit=False)
                 new_object.save()
-    #             # new_object.user = request.user
-    #             # print(form)
                 print(request.user)
-    #             # new_object.save()
-                return redirect("/admin/provider/bill/")
+                bill = Bill.objects.get(pk=request.POST.get('bill'))
+
+                return redirect(f"/admin/provider/bill/?company__name={bill.company.name}")
 
     #     return redirect("bill-pay", pk=self.kwargs['pk'])
     
