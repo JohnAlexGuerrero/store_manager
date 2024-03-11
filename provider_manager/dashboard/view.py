@@ -1,6 +1,7 @@
 from typing import Any
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic import TemplateView
+from django.db.models.query import QuerySet
+from django.views.generic import TemplateView, ListView
 from datetime import datetime
 from django.db.models import Sum
 from decimal import Decimal
@@ -13,11 +14,11 @@ class HomeView(TemplateView):
   
   def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
     context =  super().get_context_data(**kwargs)
-    orders = Order.objects.all().order_by('createdAt')
+    orders = Order.objects.all().order_by('-createdAt')
     
     context['sales'] = self.orders_per_paginate(orders, paginate=self.paginate_by)
+    context['orders'] = orders
     context['sales_per_month'] = self.orders_total_month(orders=orders)
-    print(context)
 
     return context
   
@@ -43,3 +44,21 @@ class HomeView(TemplateView):
       
     return sales_total_by_month
 #https://dribbble.com/shots/16203931-Invo-Invoicing-Web-Application
+
+class SearchDateView(ListView):
+  model = Order
+  template_name = 'dashboard/index.html'
+  
+  def get_queryset(self):
+    query = self.request.GET.get('q')
+    object_list = Order.objects.filter(
+      createdAt__icontains=query
+    )
+
+    return object_list
+  
+  def get_context_data(self, **kwargs: Any):
+    context = super().get_context_data(**kwargs)
+    context['sales'] = self.get_queryset()
+    print(context)
+    return context

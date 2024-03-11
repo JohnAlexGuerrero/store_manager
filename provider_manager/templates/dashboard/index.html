@@ -85,34 +85,19 @@
       </div>
     </div>
     <div class="col col">
-      <div class="card">
+      <div class="card border-0 shadow-lg mb-5  rounded">
         <div class="card-body">
-          <div class="d-flex justify-content-between">
+          <div class="d-flex justify-content-between p-2">
             <p class="h3">Sales</p>
-            <div class="btn-group d-flex w-25 justify-content-between" role="group">
-              <button type="button" class="btn btn-light dropdown-toggle border-0" data-bs-toggle="dropdown" aria-expanded="false" onclick="selectedMonth()">
-                <div class="icon-link">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
-                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
-                  </svg>
-                  Month:
-                </div>
-              </button>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">January</a></li>
-                <li><a class="dropdown-item" href="#">February</a></li>
-                <li><a class="dropdown-item" href="#">March</a></li>
-                <li><a class="dropdown-item" href="#">April</a></li>
-                <li><a class="dropdown-item" href="#">May</a></li>
-                <li><a class="dropdown-item" href="#">June</a></li>
-                <li><a class="dropdown-item" href="#">July</a></li>
-                <li><a class="dropdown-item" href="#">August</a></li>
-                <li><a class="dropdown-item" href="#">Setember</a></li>
-                <li><a class="dropdown-item" href="#">Octuber</a></li>
-                <li><a class="dropdown-item" href="#">November</a></li>
-                <li><a class="dropdown-item" href="#">Dicember</a></li>
-              </ul>
-            </div>
+            <!-- <div class="d-flex w-50 justify-content-between" > -->
+              <div class="border-0" >
+                Date:
+                <form action="{% url 'search_per_date' %}" method="get">
+                  <input type="date" id="inputDateID" name="q" />
+                  <input type="submit" value="search">
+                </form>
+              </div>
+            <!-- </div> -->
           </div>
         
           <table class="table table-borderless">
@@ -172,10 +157,6 @@
 
 <script>
 
-  const selectedMonth = () =>{
-    alert('click')
-  }
-  
   const listSalesPerMonth = "{{sales_per_month}}"
   const sizeListSalesPerMonth = listSalesPerMonth.length
   const dataString = listSalesPerMonth.slice(1, sizeListSalesPerMonth-1)

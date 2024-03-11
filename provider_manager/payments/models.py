@@ -1,9 +1,13 @@
 from django.db import models
 from django.urls import reverse
+from decimal import Decimal
+
+from django.contrib.auth.models import User
+from django.db.models import Sum
+
+from sales.models import Order, Utility
 from provider.models import Bill
 from sales.models import OrderDetailSale
-from django.contrib.auth.models import User
-from sales.models import Order, Utility
 
 # Create your models here.
 set_way_to_pay = (
@@ -35,10 +39,24 @@ class Provider(models.Model):
         return reverse("Provider_detail", kwargs={"pk": self.pk})
     
     def save(self, *args, **kwargs):
+        is_paid = False
         bill = Bill.objects.get(id=self.bill.id)
-        print(bill.number)
-        if (bill.total - self.value) < 1000:
-            bill.is_paid = True
+
+        if (bill.total - self.value) == 0:
+            is_paid = True
+        else:
+            payments = Provider.objects.filter(bill=self.bill.id)
+            total_pays = payments.aggregate(Sum('value'))
+            total_value = 0
+
+            if total_pays['value__sum'] != None:
+                total_value = total_pays['value__sum']
+                
+            if (bill.total - Decimal(total_value)) <= 0.0:
+                is_paid = True
+        
+        if is_paid:
+            bill.is_paid = is_paid
             bill.save()
         return super().save(*args, **kwargs)
 

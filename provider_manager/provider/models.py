@@ -85,10 +85,12 @@ class Bill(models.Model):
         return ''#Order.objects.filter(order__bill=self.id).count()
 
     def save(self, *args, **kwargs):
-        total = OrderDetail.objects.filter(bill=self.id).aggregate(Sum('total'))
+        query = OrderDetail.objects.filter(bill=self.id)
+        total = query.aggregate(Sum('total'))
         self.subtotal = total["total__sum"]
         self.total = total['total__sum'] * Decimal(1.19)
-        print(OrderDetail.objects.filter(bill=self.id))
+        print(query)
+        print(total)
         self.tax = self.total - self.subtotal
         
         return super().save(*args, **kwargs)
