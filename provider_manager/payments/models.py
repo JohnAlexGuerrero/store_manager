@@ -45,20 +45,22 @@ class Provider(models.Model):
         if (bill.total - self.value) == 0:
             is_paid = True
         else:
-            payments = Provider.objects.filter(bill=self.bill.id)
-            total_pays = payments.aggregate(Sum('value'))
-            total_value = 0
+            total_value = self.total_pays()
 
-            if total_pays['value__sum'] != None:
-                total_value = total_pays['value__sum']
-                
-            if (bill.total - Decimal(total_value)) <= 0.0:
+            if (bill.total - total_value) <= 0.0:
                 is_paid = True
         
         if is_paid:
             bill.is_paid = is_paid
             bill.save()
         return super().save(*args, **kwargs)
+    
+    def total_balance(self):
+        total = 0
+        payments = Provider.objects.filter(bill=self.bill.id)
+        if payments:
+            total = payments.aggregate(Sum('value'))['value__sum']
+        return total
 
 class SalesBill(models.Model):
     order = models.ForeignKey(Order, verbose_name=("orders"), on_delete=models.CASCADE)

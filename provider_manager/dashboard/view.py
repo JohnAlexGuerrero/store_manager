@@ -1,12 +1,16 @@
 from typing import Any
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models.query import QuerySet
+
 from django.views.generic import TemplateView, ListView
+
 from datetime import datetime
-from django.db.models import Sum
+from django.db.models import Sum, Count
 from decimal import Decimal
 
 from sales.models import Order
+from provider.models import Bill, Company
+from payments.models import Provider
 
 class HomeView(TemplateView):
   paginate_by = 8
@@ -62,3 +66,27 @@ class SearchDateView(ListView):
     context['sales'] = self.get_queryset()
     print(context)
     return context
+  
+class ProviderViewList(ListView):
+  model = Company
+  template_name = 'dashboard/bill.html'
+
+  def get_context_data(self, **kwargs: Any):
+    context = super().get_context_data(**kwargs)
+    companies = Company.objects.filter(bill__is_paid=0).order_by('name').distinct()
+
+    context['companies'] = companies
+    context['balance'] = self.total_balance(companies)
+    context['buys'] = 0
+    
+    return context
+  
+  def total_balance(self, companies):
+    balance = 0
+    
+    for item in companies:
+      pays_total = Provider.objects.filter(bill=item.id).aggregate(Sum('value'))
+      balance += item.balance() - (pays_total['value__sum'] if pays_total['value__sum'] != None else 0)
+      
+    return f'{balance:,.2f}'
+  

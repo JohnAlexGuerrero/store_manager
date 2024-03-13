@@ -11,11 +11,18 @@ from django.views.generic import DetailView
 from django.views.generic import View
 from django.views.generic import TemplateView
 from django.views.generic import CreateView
+from django.views.generic import ListView
 
 from payments.forms import ProviderForm
 
 
 # Create your views here.
+class ProviderListView(ListView):
+    model = Provider
+    template_name = "provider/index.html"
+
+
+
 class BillDetailView(DetailView):
     model = Bill
     template_name = "bill/detail.html"

@@ -33,7 +33,22 @@ class Company(models.Model):
         if not self.url:
             self.url = slugify(self.name)
         return super().save(*args, **kwargs)
+    
+    def balance(self):
+        result_balance = 0
+        bills = self.bills_is_pending()
+        if bills != None:
+            result = [x.total for x in bills]
+            result_balance = sum(result)
 
+        return result_balance
+    
+    def bills_is_pending(self):
+        query = Bill.objects.filter(is_paid=0, company_id=self.id).order_by('company__name')
+        if query:
+            return query
+        return None
+    
 class OrderDetail(models.Model):
     product = models.ForeignKey(Product, verbose_name=("product"), on_delete=models.CASCADE)
     quantity = models.IntegerField(("cantidad"), default=0)
@@ -80,20 +95,18 @@ class Bill(models.Model):
 
     def get_absolute_url(self):
         return reverse("Bill_detail", kwargs={"pk": self.pk})
-    
-    def count_items(self):
-        return ''#Order.objects.filter(order__bill=self.id).count()
 
     def save(self, *args, **kwargs):
         query = OrderDetail.objects.filter(bill=self.id)
         total = query.aggregate(Sum('total'))
         self.subtotal = total["total__sum"]
         self.total = total['total__sum'] * Decimal(1.19)
-        print(query)
-        print(total)
         self.tax = self.total - self.subtotal
         
         return super().save(*args, **kwargs)
+
+
+
 
         
 

@@ -1,8 +1,8 @@
 from typing import Any
 from django.contrib import admin
 from django.db.models import Sum
+
 from payments.models import Provider, SalesBill
-from provider.models import Bill
 from sales.models import Utility
 from payments.forms import ProviderForm
 
@@ -10,18 +10,13 @@ from payments.forms import ProviderForm
 # Register your models here.
 @admin.register(Provider)
 class ProviderAdmin(admin.ModelAdmin):
-    list_display = ['company_display','bill','createdAt','value',"balance"]
+    list_display = ['company_display','bill','createdAt','value']
     date_hierarchy = 'createdAt'
     search_fields = ("bill__number",)
     ordering = ('createdAt',)
     
     form = ProviderForm
-    
-    def balance(self, obj):
-        pays = Bill.objects.filter(number=obj.bill) #Provider.objects.filter(bill=obj.bill)
-        print(pays)
-        return 0
-    
+
     def get_bill_pending(self, obj):
         return []
     
