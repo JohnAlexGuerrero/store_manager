@@ -82,11 +82,17 @@ class ProviderViewList(ListView):
     return context
   
   def total_balance(self, companies):
-    balance = 0
+    balance, total_pay = 0, 0
     
     for item in companies:
-      pays_total = Provider.objects.filter(bill=item.id).aggregate(Sum('value'))
-      balance += item.balance() - (pays_total['value__sum'] if pays_total['value__sum'] != None else 0)
+      payments = Provider.objects.filter(bill__company_id=item.id, bill__is_paid=0).distinct()
+      total_value_dict = payments.aggregate(Sum('value'))['value__sum']
+
+      print(total_value_dict)  
+      if total_value_dict != None:
+        total_pay = total_value_dict
+        
+      balance += item.balance() - total_pay
       
     return f'{balance:,.2f}'
   

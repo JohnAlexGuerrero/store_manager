@@ -61,6 +61,10 @@ class Provider(models.Model):
         if payments:
             total = payments.aggregate(Sum('value'))['value__sum']
         return total
+    
+    def total_pays(self):
+        total = Provider.objects.filter(bill=self.bill.id).aggregate(Sum('value'))
+        return total['value__sum']
 
 class SalesBill(models.Model):
     order = models.ForeignKey(Order, verbose_name=("orders"), on_delete=models.CASCADE)

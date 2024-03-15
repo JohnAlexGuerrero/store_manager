@@ -97,11 +97,14 @@ class Bill(models.Model):
         return reverse("Bill_detail", kwargs={"pk": self.pk})
 
     def save(self, *args, **kwargs):
-        query = OrderDetail.objects.filter(bill=self.id)
+        query = OrderDetail.objects.filter(bill=self.id, bill__createdAt=self.createdAt)
+        print(query.values())
         total = query.aggregate(Sum('total'))
-        self.subtotal = total["total__sum"]
-        self.total = total['total__sum'] * Decimal(1.19)
-        self.tax = self.total - self.subtotal
+        if total["total__sum"] != None:
+            self.subtotal = total["total__sum"]
+            self.total = total['total__sum'] * Decimal(1.19)
+            self.tax = self.total - self.subtotal
+
         
         return super().save(*args, **kwargs)
 
