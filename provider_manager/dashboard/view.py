@@ -88,7 +88,6 @@ class ProviderViewList(ListView):
       payments = Provider.objects.filter(bill__company_id=item.id, bill__is_paid=0).distinct()
       total_value_dict = payments.aggregate(Sum('value'))['value__sum']
 
-      print(total_value_dict)  
       if total_value_dict != None:
         total_pay = total_value_dict
         

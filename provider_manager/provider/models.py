@@ -44,7 +44,8 @@ class Company(models.Model):
         return result_balance
     
     def bills_is_pending(self):
-        query = Bill.objects.filter(is_paid=0, company_id=self.id).order_by('company__name')
+        query = Bill.objects.filter(is_paid=0, company_id=self.id)
+
         if query:
             return query
         return None
@@ -97,7 +98,7 @@ class Bill(models.Model):
         return reverse("Bill_detail", kwargs={"pk": self.pk})
 
     def save(self, *args, **kwargs):
-        query = OrderDetail.objects.filter(bill=self.id, bill__createdAt=self.createdAt)
+        query = OrderDetail.objects.filter(bill=self.id)
         print(query.values())
         total = query.aggregate(Sum('total'))
         if total["total__sum"] != None:

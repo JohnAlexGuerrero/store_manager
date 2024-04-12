@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
 from decimal import Decimal
+from datetime import datetime
 
 # Create your models here.
 set_unit_product = (
@@ -43,6 +44,8 @@ class Product(models.Model):
         if self.cost_with_tax == 0:
             self.cost_with_tax = self.cost * Decimal(1.19)
             self.tax = round(self.cost_with_tax - self.cost, 2)
+        
+        self.updatedAt = datetime.now().strftime('%Y-%m-%d')
         return super().save(*args, **kwargs)
 
 class Category(models.Model):
@@ -64,3 +67,4 @@ class Category(models.Model):
         if self.slug:
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
+    

@@ -21,10 +21,17 @@ def selected_one_bill(modeladmin, request, queryset):
 class CompanyAdmin(admin.ModelAdmin):
     list_display = ['name','sellerman','phone','balance_total']
     fields = ['name', 'address','phone','sellerman']
+    ordering = ('name',)
     
     def balance_total(self, obj):
         total = Bill.objects.filter(company__name=obj.name).aggregate(Sum('total'))
-        return f'$ {total['total__sum']:,.2f}'
+        res = total['total__sum']
+        
+        pays = Provider.objects.filter(bill__company__name=obj.name).aggregate(Sum('value'))
+        if pays:
+          res -= pays['value__sum']
+        
+        return f'$ {res:,.2f}'
 
 @admin.register(Bill)
 class BillAdmin(admin.ModelAdmin):
@@ -69,6 +76,7 @@ class BillAdmin(admin.ModelAdmin):
 @admin.register(OrderDetail)
 class OrderDetailAdmin(admin.ModelAdmin):
     list_display = ['createdAt','product_display','quantity','unit_display','price']
+    search_fields = ['product__description']
     
     def product_display(self, obj):
         return obj.product

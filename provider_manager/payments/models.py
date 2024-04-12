@@ -47,7 +47,7 @@ class Provider(models.Model):
         else:
             total_value = self.total_pays()
 
-            if (bill.total - total_value) <= 0.0:
+            if (bill.total - total_value) <= 0:
                 is_paid = True
         
         if is_paid:
@@ -63,8 +63,11 @@ class Provider(models.Model):
         return total
     
     def total_pays(self):
-        total = Provider.objects.filter(bill=self.bill.id).aggregate(Sum('value'))
-        return total['value__sum']
+        total = 0
+        query = Provider.objects.filter(bill=self.bill.id).aggregate(Sum('value'))
+        if query["value__sum"] != None:
+          total = query["value__sum"]
+        return total
 
 class SalesBill(models.Model):
     order = models.ForeignKey(Order, verbose_name=("orders"), on_delete=models.CASCADE)
