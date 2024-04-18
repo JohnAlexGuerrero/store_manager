@@ -1,0 +1,57 @@
+{% extends "base/index.html" %}
+
+{% load static %}
+
+{% block cdn %}{% endblock cdn %}
+
+{% block title %}
+Reporte Ventas por Mes
+{% endblock title %}
+
+{% block main%}
+<div class="container">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between bg-white">
+            <div>
+                name store
+            </div>
+            <div>
+                <p class="h5 fw-bold">Total Ventas</p>
+                <h1 class="h3 fw-bold">$ {{ total }}</h1>
+            </div>
+        </div>
+        <div class="card-body">
+            <p class="fw-medium text-secondary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
+                    <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
+                </svg>
+                June 01, 2024 - June 30, 2024
+            </p>
+            <h1 class="h4 fw-bold">Ventas por categoría</h1>
+            <table class="table table-borderless">
+                <tbody>
+                    {% for category in categories %}
+                    <tr>
+                        <td>{{ category.name }}</td>
+                        <td>$12.899,00</td>
+                        <td>+$8000,0</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer bg-white d-flex justify-content-between">
+            <div>
+                <p class="fw-medium text-secondary">Total ventas</p>
+                <h1 class="h3 fw-bold">$ {{ total }}</h1>
+            </div>
+            <div>
+                <p class="fw-medium text-secondary">Total utilidad</p>
+                <h1 class="h3 fw-bold">$750.00</h1>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock main %}
+
+{% block javascript %}{% endblock javascript %}

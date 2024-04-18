@@ -67,4 +67,7 @@ class Category(models.Model):
         if self.slug:
             self.slug = slugify(self.name)
         return super().save(*args, **kwargs)
-    
+
+    def get_products(self):
+        list_products = Product.objects.filter(category__name=self.name)
+        return list_products

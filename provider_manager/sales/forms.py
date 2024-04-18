@@ -33,8 +33,10 @@ class ClientForm(forms.ModelForm):
         fields = ("name","num_doc","address","phone")
 
 class OrderDetailSaleForm(forms.ModelForm):
-    # CHOICES = get_bill_not_cancel
-    # order = forms.ChoiceField(choices=CHOICES, required=False)
     class Meta:
         model = OrderDetailSale
         fields = ("product","amount","price","dto")
+
+        widgets = {
+            "product": forms.Select(attrs={"class":"form-select form-select-sm"}),
+        }

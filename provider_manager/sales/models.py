@@ -40,7 +40,7 @@ class OrderDetailSale(models.Model):
         return reverse("OrderDetail_detail", kwargs={"pk": self.pk})
 
     def save(self, *args, **kwargs):
-        self.total = (self.amount * self.price ) - (self.dto * self.amount)    
+        self.total = (self.amount * self.price ) - self.dto    
         return super().save(*args, **kwargs)
     
 class Order(models.Model):

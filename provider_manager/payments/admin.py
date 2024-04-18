@@ -12,8 +12,8 @@ from payments.forms import ProviderForm
 class ProviderAdmin(admin.ModelAdmin):
     list_display = ['company_display','bill','createdAt','value']
     date_hierarchy = 'createdAt'
-    search_fields = ("bill__number",)
-    ordering = ('createdAt',)
+    search_fields = ("bill__number","createdAt")
+    ordering = ('-createdAt',)
     
     form = ProviderForm
 

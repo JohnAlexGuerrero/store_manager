@@ -1,0 +1,33 @@
+
+<div class="grid min-h-screen w-full">
+    <h1 class="h4 fw-bold">Productos</h1>
+    <ul class="list-group">
+        {% for item in items %}
+        <li class="list-group-item">
+            <div class="d-flex">
+                <div class="mx-2 justify-content-center p-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-box2" viewBox="0 0 16 16">
+                        <path d="M2.95.4a1 1 0 0 1 .8-.4h8.5a1 1 0 0 1 .8.4l2.85 3.8a.5.5 0 0 1 .1.3V15a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V4.5a.5.5 0 0 1 .1-.3zM7.5 1H3.75L1.5 4h6zm1 0v3h6l-2.25-3zM15 5H1v10h14z"/>
+                    </svg>
+                </div>
+                <div class="fw-bold p-2">
+                    {{ item.description.capitalize }}.
+                </div>
+            </div>
+            <div class="d-flex">
+                <div class="container p-2">
+                    <strong >$ <small>{{ item.cost_with_tax }}</small></strong>
+                </div>
+                <div>
+                    <button class="btn icon-link border btn-outline-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
+                        </svg>
+                        Agregar
+                    </button>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
