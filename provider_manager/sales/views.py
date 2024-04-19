@@ -41,22 +41,19 @@ class SearchSalesByMonthView(ListView):
             total = total + item.total
         return f'{total:,.2f}'
     
-    def get_total_by_category(self):
+    def get_total_by_category(self):        
         categories = Category.objects.all().order_by('name')
         for category in categories:
             total = 0
+ 
             for order in self.get_queryset():
                 items = OrderDetailSale.objects.filter(order=order.id, product__category=category.id)
                 if items:
-                    print(category)
-                    print(items)
-                    print(order.createdAt)
-                    print(order.number)
                     total_list = [x.total for x in items]
                     total += sum(total_list)
-                    print(total)
                 else:
                     continue
+            category.total = f'{total:,.2f}'
         return categories
     
 

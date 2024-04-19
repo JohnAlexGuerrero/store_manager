@@ -29,11 +29,11 @@ Reporte Ventas por Mes
             </p>
             <h1 class="h4 fw-bold">Ventas por categoría</h1>
             <table class="table table-borderless">
-                <tbody>
+                <tbody id="id_table">
                     {% for category in categories %}
                     <tr>
                         <td>{{ category.name }}</td>
-                        <td>$12.899,00</td>
+                        <td>$ {{ category.total }}</td>
                         <td>+$8000,0</td>
                     </tr>
                     {% endfor %}
@@ -54,4 +54,18 @@ Reporte Ventas por Mes
 </div>
 {% endblock main %}
 
-{% block javascript %}{% endblock javascript %}
+{% block javascript %}
+<script>
+    const table = document.querySelector("#id_table")
+    const rows = document.querySelectorAll("tr")
+
+    const comparisonByValue = ()=>{
+
+    }
+
+    rows.forEach(el =>{
+        let value = el.cells[1].textContent.replace(/[^0-9.,+\-]/g, '');
+        console.log(value)     
+    })
+</script>
+{% endblock javascript %}
