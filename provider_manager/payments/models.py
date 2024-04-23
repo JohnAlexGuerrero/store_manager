@@ -45,9 +45,9 @@ class Provider(models.Model):
         if (bill.total - self.value) == 0:
             is_paid = True
         else:
-            total_value = self.total_pays()
+            res_value = bill.total - (self.total_pays() + self.value)
 
-            if (bill.total - total_value) <= 0:
+            if res_value <= 100:
                 is_paid = True
         
         if is_paid:
