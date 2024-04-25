@@ -98,7 +98,7 @@ class Bill(models.Model):
         return reverse("Bill_detail", kwargs={"pk": self.pk})
 
     def save(self, *args, **kwargs):
-        query = OrderDetail.objects.filter(bill=self.id)
+        query = OrderDetail.objects.filter(bill__id=self.id, createdAt=self.createdAt)
         print(query.values())
         total = query.aggregate(Sum('total'))
         if total["total__sum"] != None:
