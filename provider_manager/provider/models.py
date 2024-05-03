@@ -99,8 +99,8 @@ class Bill(models.Model):
 
     def save(self, *args, **kwargs):
         query = OrderDetail.objects.filter(bill__id=self.id, createdAt=self.createdAt)
-        print(query.values())
         total = query.aggregate(Sum('total'))
+
         if total["total__sum"] != None:
             self.subtotal = total["total__sum"]
             self.total = total['total__sum'] * Decimal(1.19)

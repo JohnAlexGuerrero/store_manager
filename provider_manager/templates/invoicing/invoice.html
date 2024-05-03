@@ -1,0 +1,39 @@
+{% extends "base/index.html" %}
+
+{% load static %}
+
+{% block title %}
+Facturacion
+{% endblock title %}
+
+{% block cnd %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js" integrity="sha512-PJa3oQSLWRB7wHZ7GQ/g+qyv6r4mbuhmiDb8BjSFZ8NZ2a42oTtAq5n0ucWAwcQDlikAtkub+tPVCw4np27WCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock cnd %}
+
+{% block css %}{% endblock css %}
+
+{% block main %}
+vendedor
+
+informacion de Factura
+
+buscador cliente | info cliente
+{% include "client/search.html" %}
+
+
+
+seccion pedido de productos
+
+total pedido
+
+notas
+
+opciones(imprimir, guardar)
+
+{% endblock main %}
+
+{% block javascript %}
+<script>
+    
+</script>
+{% endblock javascript %}

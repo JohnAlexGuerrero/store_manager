@@ -11,6 +11,7 @@ from django.views.generic import ListView
 
 from datetime import datetime
 from django.db.models import Sum
+from django.http import JsonResponse
 
 from sales.forms import OrderDetailSaleForm
 
@@ -18,6 +19,29 @@ from reportlab.pdfgen import canvas
 from django.http import HttpResponse
 
 # Create your views here.
+
+#view para buscar un cliente
+def SearchClientListView(request):
+    query = request.GET.get('q')
+    
+    clients = Client.objects.filter(
+        Q(name__icontains=query)
+    )
+    
+    return JsonResponse({
+        "clients": [
+            {
+                'id':client.id,
+                'name': client.name,
+                'address': client.address,
+                'phone': client.phone
+            }
+            for client in clients
+        ]
+    })
+    
+
+
 class SearchSalesByMonthView(ListView):
     template_name = "sales/sales_month.html"
     model = Order

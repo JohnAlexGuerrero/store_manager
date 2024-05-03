@@ -1,0 +1,44 @@
+{% block cnd %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js" integrity="sha512-PJa3oQSLWRB7wHZ7GQ/g+qyv6r4mbuhmiDb8BjSFZ8NZ2a42oTtAq5n0ucWAwcQDlikAtkub+tPVCw4np27WCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock cnd %}
+
+<div>
+    <label for="">Customer</label>
+    <input name="q" type="search" placeholder="" id="id_search_customer">
+</div>
+
+<ul id="id_clients"></ul>
+
+<script>
+    const searchCustomer = document.querySelector('#id_search_customer')
+    const resClient = document.querySelector("#id_clients")
+
+    //filtrar los clientes
+    const getClients = (q)=>{
+        axios('search/client/?q=' + q).then(response =>{
+            let res = response.data
+
+            resClient.innerHTML = ''
+
+            res.clients.forEach(el =>{
+                const li = document.createElement('li')
+                li.innerHTML =`
+                <li>${el.name}</li>
+                ` 
+                resClient.appendChild(li)
+            })
+            
+        })
+
+    }
+
+    // input search
+    searchCustomer.addEventListener('keyup', (e)=>{
+        if(e.target.value != null){
+            getClients(e.target.value)
+        }else{
+            resClient.innerHTML = ''
+        }
+    })
+
+</script>
