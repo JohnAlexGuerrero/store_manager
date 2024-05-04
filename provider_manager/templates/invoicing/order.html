@@ -1,21 +1,23 @@
 {% block cnd %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js" integrity="sha512-PJa3oQSLWRB7wHZ7GQ/g+qyv6r4mbuhmiDb8BjSFZ8NZ2a42oTtAq5n0ucWAwcQDlikAtkub+tPVCw4np27WCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 {% endblock cnd %}
-seccion pedido de productos
 
-
-    mostrar informacion de producto
-    adicionar cantidad
-    total
 <div>
     <input type="text" placeholder="producto", id="id_product" autocomplete="off">
-
+    <input type="number" value="0" min="0" id="id_qty" autocomplete="off" onchange="addQty()">
+    <span id="id_und">Und</span>
+    <input type="number" value="0" id="id_price" autocomplete="off">
+    <span id="id_total">$ 0.0</span>
     <ul id="id_items"></ul>
 </div>
 
 <script>
     const item = document.querySelector('#id_product')
     const items = document.querySelector('#id_items')
+    const unit = document.querySelector('#id_und')
+    const qty = document.querySelector('#id_qty')
+    const total = document.querySelector('#id_total')
+    const price = document.querySelector('#id_price')
 
     //buscar producto
     const getItems = (q)=>{
@@ -27,7 +29,7 @@ seccion pedido de productos
             products.forEach(el =>{
                 const li = document.createElement('li')
                 li.innerHTML = `
-                <li id="${el.id}" onClick="selectItem(${el.id})">${el.description}</li>
+                <li id="${el.id}" onClick="selectItem(${el.code})">${el.description}</li>
                 `
                 items.appendChild(li)
             })
@@ -43,8 +45,35 @@ seccion pedido de productos
     })
 
     //seleccionar producto
-    const selectItem = (id)=>{
-        console.log(id)
+    const selectItem = (code)=>{
+        axios('product/?q=' + code).then(response =>{
+            product = response.data.item[0]
+            orderDetail(product)
+
+            items.innerHTML = ''
+        })
     }
+
+    // detalle de pedido por prooducto
+    const orderDetail = product =>{
+        item.value = product.description
+        unit.textContent = product.und
+        price.value = product.price
+        qty.value = 1
+
+        totalItem(product.price, qty.value)
+    }
+
+    // cambio de total por cambio de qty
+    const totalItem = (qty, price) => total.textContent = qty * price
+
+    // dejar de seleccionar producto para cambio
+
+    // accion cambio de qty y cambio en total
+    const addQty = () => {
+        totalItem(qty.value, price.value)
+    }
+
+    qty.addEventListener('keyup', addQty())
 
 </script>

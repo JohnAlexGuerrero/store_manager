@@ -29,6 +29,7 @@ def report_cost_items(modeladmin, request, queryset):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ["name","items","total_cost_items"]
+    search_fields = ["name"]
     form = CategoryForm
     
     def total_cost_items(self, obj):

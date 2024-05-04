@@ -30,6 +30,27 @@ def searchProduct(request):
             for item in products
         ]
     })
+
+#seleccion de producto
+def selectProduct(request):
+    code = request.GET.get('q')
+    
+    item = Product.objects.get(code=code)
+    print(item)
+    
+    return JsonResponse({
+        "item":[
+            {
+                "id": item.id,
+                "description": item.description,
+                "code": item.code,
+                "und": item.unit,
+                "stock": item.stock,
+                "tax": item.tax,
+                "price": item.cost_with_tax,
+            }
+        ]
+    })
     
 
 class InventoryView(TemplateView):
