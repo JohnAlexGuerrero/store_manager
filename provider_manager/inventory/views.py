@@ -13,7 +13,7 @@ def searchProduct(request):
     query = request.GET.get('q')
     
     products = Product.objects.filter(
-        Q(description__icontains=query)
+        Q(description__contains=query)
     )
     
     return JsonResponse({

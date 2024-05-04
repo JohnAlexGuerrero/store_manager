@@ -2,8 +2,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js" integrity="sha512-PJa3oQSLWRB7wHZ7GQ/g+qyv6r4mbuhmiDb8BjSFZ8NZ2a42oTtAq5n0ucWAwcQDlikAtkub+tPVCw4np27WCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 {% endblock cnd %}
 seccion pedido de productos
-    buscar producto
-    seleccionar producto
+
+
     mostrar informacion de producto
     adicionar cantidad
     total
@@ -17,10 +17,20 @@ seccion pedido de productos
     const item = document.querySelector('#id_product')
     const items = document.querySelector('#id_items')
 
-    //obtener los productos que correspondan a q
+    //buscar producto
     const getItems = (q)=>{
         axios('search/product/?q=' + q).then(response =>{
-            console.log(response.data.items)
+            let products = response.data.items
+
+            items.innerHTML = ''
+
+            products.forEach(el =>{
+                const li = document.createElement('li')
+                li.innerHTML = `
+                <li id="${el.id}" onClick="selectItem(${el.id})">${el.description}</li>
+                `
+                items.appendChild(li)
+            })
         })
     }
 
@@ -29,5 +39,12 @@ seccion pedido de productos
             getItems(e.target.value)
         }
 
+        items.innerHTML = ''
     })
+
+    //seleccionar producto
+    const selectItem = (id)=>{
+        console.log(id)
+    }
+
 </script>
