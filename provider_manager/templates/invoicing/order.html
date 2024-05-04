@@ -1,0 +1,33 @@
+{% block cnd %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.8/axios.min.js" integrity="sha512-PJa3oQSLWRB7wHZ7GQ/g+qyv6r4mbuhmiDb8BjSFZ8NZ2a42oTtAq5n0ucWAwcQDlikAtkub+tPVCw4np27WCg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+{% endblock cnd %}
+seccion pedido de productos
+    buscar producto
+    seleccionar producto
+    mostrar informacion de producto
+    adicionar cantidad
+    total
+<div>
+    <input type="text" placeholder="producto", id="id_product" autocomplete="off">
+
+    <ul id="id_items"></ul>
+</div>
+
+<script>
+    const item = document.querySelector('#id_product')
+    const items = document.querySelector('#id_items')
+
+    //obtener los productos que correspondan a q
+    const getItems = (q)=>{
+        axios('search/product/?q=' + q).then(response =>{
+            console.log(response.data.items)
+        })
+    }
+
+    item.addEventListener('keyup', (e)=>{
+        if(e.target.value != ''){
+            getItems(e.target.value)
+        }
+
+    })
+</script>
