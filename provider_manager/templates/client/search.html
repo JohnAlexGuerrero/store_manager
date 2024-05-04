@@ -3,11 +3,15 @@
 {% endblock cnd %}
 
 <div>
-    <label for="">Customer</label>
-    <input name="q" type="search" placeholder="" id="id_search_customer">
+    <div>
+        <label for="">Customer</label>
+        <input name="q" type="text" placeholder="" id="id_search_customer" autocomplete="off">
+    </div>
+
+    <ul id="id_clients"></ul>
 </div>
 
-<ul id="id_clients"></ul>
+
 
 <script>
     const searchCustomer = document.querySelector('#id_search_customer')
@@ -23,22 +27,41 @@
             res.clients.forEach(el =>{
                 const li = document.createElement('li')
                 li.innerHTML =`
-                <li>${el.name}</li>
+                <li id="id_item_${el.id}" onClick="selectedClient(${el.id})">${el.name}</li>
                 ` 
                 resClient.appendChild(li)
             })
-            
         })
 
     }
 
+    //seleccion de un cliente para mostrar sus datos
+    const selectedClient = (id)=>{        
+        axios('client/?id=' + id).then(response =>{
+            let client = response.data.client[0]
+
+            searchCustomer.value = client.name
+            resClient.innerHTML = `
+            <div>
+                <label for="">Address</label>
+                <input type="text" value="${client.address}" id="id_address" autocomplete="off">
+            </div>
+            <div>
+                <label for="">Teléfono</label>
+                <input type="tel" value="${client.phone}" id="id_phone" autocomplete="off">
+            </div>
+            `
+
+        })
+    }
+
     // input search
     searchCustomer.addEventListener('keyup', (e)=>{
-        if(e.target.value != null){
+        if(e.target.value != ''){
             getClients(e.target.value)
-        }else{
-            resClient.innerHTML = ''
         }
+
+        resClient.innerHTML = ''
     })
 
 </script>

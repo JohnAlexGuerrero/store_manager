@@ -20,7 +20,7 @@ from django.http import HttpResponse
 
 # Create your views here.
 
-#view para buscar un cliente
+#view para filtrar  clientes por su nombre
 def SearchClientListView(request):
     query = request.GET.get('q')
     
@@ -40,6 +40,22 @@ def SearchClientListView(request):
         ]
     })
     
+#view para buscar un cliente
+def clientView(request):
+    id = request.GET.get('id')
+    
+    client = Client.objects.get(id=id)
+    
+    return JsonResponse({
+        "client": [
+            {
+                'id':client.id,
+                'name': client.name,
+                'address': client.address,
+                'phone': client.phone
+            }
+        ]
+    })
 
 
 class SearchSalesByMonthView(ListView):
