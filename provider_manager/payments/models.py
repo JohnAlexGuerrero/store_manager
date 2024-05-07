@@ -87,7 +87,7 @@ class SalesBill(models.Model):
         return reverse("Bill_detail", kwargs={"pk": self.pk})
 
     def save(self, *args, **kwargs):
-        order_details = OrderDetailSale.objects.filter(order_id=self.order.id)
+        order_details = OrderDetailSale.objects.filter(order=self.order)
         print(order_details)
         
         for item in order_details:

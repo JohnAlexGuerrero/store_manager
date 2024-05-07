@@ -71,8 +71,6 @@ class Order(models.Model):
 
     def save(self, *args, **kwargs):
         items = OrderDetailSale.objects.filter(order__id=self.id)
-        print(items.values())
-        print(self.values())
         total = items.aggregate(Sum('total'))
         self.total = total['total__sum']
         self.subtotal = self.total / Decimal(1.19)

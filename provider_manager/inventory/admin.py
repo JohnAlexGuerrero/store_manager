@@ -48,7 +48,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ['code','description','stock','unit','price','total_cost_stock','category_display']    
     list_editable = ('stock',)
     search_fields = ['description','category__name']
-    # list_filter = ['category_display']s
+    list_filter = ['category__name']
     list_per_page = 10
     ordering = ('description',)
     form = ProductForm

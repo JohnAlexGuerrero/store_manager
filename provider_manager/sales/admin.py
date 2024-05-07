@@ -19,16 +19,16 @@ def select_one_item(modeladmin,request, queryset):
 
 @admin.register(OrderDetailSale)
 class OrderDetailSaleAdmin(admin.ModelAdmin):
-    list_display = ['get_bill','product','amount','price','total','revenue','utility']
+    list_display = ['product','amount','price','total','revenue','utility']
     search_fields = ['product__description', 'order__number']
     list_per_page = 10
     
-    def get_bill(self, obj):
-        query = Order.objects.filter(
-            orderdetails__product__description__icontains=obj.product.description,
-            orderdetails__amount=obj.amount
-        ).order_by('-createdAt')
-        return query[0]
+    # def get_bill(self, obj):
+    #     query = Order.objects.filter(
+    #         orderdetails__product__description__icontains=obj.product.description,
+    #         orderdetails__amount=obj.amount
+    #     ).order_by('-createdAt')
+    #     return query[0]
     
     def total(self, obj):
         return obj.amount * obj.price
