@@ -20,7 +20,7 @@ def select_one_item(modeladmin,request, queryset):
 @admin.register(OrderDetailSale)
 class OrderDetailSaleAdmin(admin.ModelAdmin):
     list_display = ['product','amount','price','total','revenue','utility']
-    search_fields = ['product__description', 'order__number']
+    search_fields = ['product__description', 'order__number','order__createdAt']
     list_per_page = 10
     
     # def get_bill(self, obj):

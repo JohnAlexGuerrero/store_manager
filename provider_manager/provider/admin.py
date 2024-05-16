@@ -36,7 +36,7 @@ class CompanyAdmin(admin.ModelAdmin):
 @admin.register(Bill)
 class BillAdmin(admin.ModelAdmin):
     list_display = ['company_display','number','createdAt','expirationAt','total','status','balance_total']
-    search_fields = ['number',]
+    search_fields = ['number','company__name']
     list_filter = ("company__name",)
     list_per_page = 10
     date_hierarchy = 'createdAt'

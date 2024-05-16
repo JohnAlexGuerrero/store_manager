@@ -41,7 +41,7 @@ class Provider(models.Model):
     def save(self, *args, **kwargs):
         is_paid = False
         bill = Bill.objects.get(id=self.bill.id)
-
+        
         if (bill.total - self.value) == 0:
             is_paid = True
         else:

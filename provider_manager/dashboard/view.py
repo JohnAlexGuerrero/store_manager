@@ -76,22 +76,41 @@ class ProviderViewList(ListView):
     companies = Company.objects.filter(bill__is_paid=0).order_by('name').distinct()
 
     context['companies'] = companies
-    context['balance'] = self.total_balance(companies)
-    context['buys'] = 0
-    
+    context['balance'] = self.company_balance(companies)
+    context['total'] = self.total_balance(companies)
     return context
   
   def total_balance(self, companies):
-    balance, total_pay = 0, 0
+    total = 0
+    
+    for item in self.company_balance(companies):
+      total += item['balance']
+    return f'{total:,.2f}'
+  
+  def company_balance(self, companies):
+    res = []
     
     for item in companies:
-      payments = Provider.objects.filter(bill__company_id=item.id, bill__is_paid=0).distinct()
-      total_value_dict = payments.aggregate(Sum('value'))['value__sum']
-
-      if total_value_dict != None:
-        total_pay = total_value_dict
+      query_bills = Bill.objects.filter(company_id=item.id, is_paid=0)
+      balance = 0
+      for bill in query_bills:
+        pays = Provider.objects.filter(bill_id=bill.id)
+        total = 0
         
-      balance += item.balance() - total_pay
+        if pays:
+          total = pays.aggregate(Sum('value'))['value__sum']
+          
+        balance_bill = bill.total - total
+        balance += balance_bill
+        
+      res.append(
+        {
+          "id": item.id,
+          "name": item.name,
+          "balance": balance,
+          "count": query_bills.count() if query_bills else 0
+        }
+      )
       
-    return f'{balance:,.2f}'
+    return res
   

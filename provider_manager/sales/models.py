@@ -70,11 +70,15 @@ class Order(models.Model):
         return f'{4090 + Order.objects.all().count()}'
 
     def save(self, *args, **kwargs):
-        items = OrderDetailSale.objects.filter(order__id=self.id)
-        total = items.aggregate(Sum('total'))
-        self.total = total['total__sum']
-        self.subtotal = self.total / Decimal(1.19)
-        self.tax = self.total - self.subtotal
+        items = OrderDetailSale.objects.filter(order__createdAt=self.createdAt).filter(order__id=self.id)
+        print(items)
+        if items:
+            print(items.filter(order__id=self.id))
+            total = items.aggregate(Sum('total'))
+            self.total = total['total__sum']
+            self.subtotal = self.total / Decimal(1.19)
+            self.tax = self.total - self.subtotal
+            
         return super().save(*args, **kwargs)
 
 
